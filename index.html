@@ -16,59 +16,68 @@
             margin: 0 auto;
             padding: 20px;
         }
-        .item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            background-color: #fff;
-            margin: 10px;
-            padding: 10px;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
         }
         .item img {
-            max-width: 100%;
-            border-radius: 5px;
+            width: 300px;
+            height: auto;
+            display: block;
         }
         .item-details {
-            text-align: center;
-        }
-        .item-details h2 {
-            margin: 10px 0;
-            font-size: 1.5em;
-        }
-        .item-details p {
-            margin: 5px 0;
+            text-align: left;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Item Gallery</h1>
-        <!-- Items will be dynamically inserted here -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Image</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody id="item-table-body">
+                <!-- Items will be dynamically inserted here -->
+            </tbody>
+        </table>
     </div>
     <script>
         fetch('items.json')
             .then(response => response.json())
             .then(items => {
-                const container = document.querySelector('.container');
+                const tableBody = document.getElementById('item-table-body');
 
                 items.forEach(item => {
-                    const itemElement = document.createElement('div');
-                    itemElement.classList.add('item');
+                    const row = document.createElement('tr');
+                    row.classList.add('item');
 
-                    itemElement.innerHTML = `
-                        <a href="${item.url}" target="_blank">
-                            <img src="${item.imageSrc}" alt="${item.name}">
-                        </a>
-                        <div class="item-details">
-                            <h2>${item.name}</h2>
-                            <p>${item.currency} ${item.price}</p>
-                            <p>${item.description}</p>
-                        </div>
+                    row.innerHTML = `
+                        <td>
+                            <a href="${item.url}" target="_blank">
+                                <img src="${item.imageSrc}" alt="${item.name}">
+                            </a>
+                        </td>
+                        <td class="item-details">
+                            <p><strong>Title:</strong> ${item.name}</p>
+                            <p><strong>Price:</strong> ${item.currency} ${item.price}</p>
+                            <p><strong>Description:</strong> ${item.description}</p>
+                        </td>
                     `;
 
-                    container.appendChild(itemElement);
+                    tableBody.appendChild(row);
                 });
             })
             .catch(error => console.error('Error fetching items:', error));

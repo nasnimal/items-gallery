@@ -65,7 +65,12 @@
     </div>
     <script>
         fetch('parser-test-report.json')
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
             .then(items => {
                 const tableBody = document.getElementById('item-table-body');
 

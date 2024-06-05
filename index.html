@@ -58,13 +58,16 @@
                     const itemElement = document.createElement('div');
                     itemElement.classList.add('item');
 
+                    const price = item.price && item.price.price ? item.price.price : 'N/A';
+                    const currency = item.price && item.price.currency ? item.price.currency : '';
+
                     itemElement.innerHTML = `
                         <a href="${item.url}" target="_blank">
                             <img src="${item.imageSrc}" alt="${item.name}">
                         </a>
                         <div class="item-details">
                             <h2>${item.name}</h2>
-                            <p>${item.currency ? item.currency : ''} ${item.price ? item.price : ''}</p>
+                            <p>${currency} ${price}</p>
                             <p>${item.description}</p>
                         </div>
                     `;

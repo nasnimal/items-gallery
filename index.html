@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Item Gallery 2.0</title>
+    <title>Item Gallery</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -34,6 +34,10 @@
             height: auto;
             display: block;
         }
+        .favicon {
+            width: 16px;
+            height: 16px;
+        }
         .item-details {
             text-align: left;
         }
@@ -47,6 +51,7 @@
                 <tr>
                     <th>Image</th>
                     <th>Details</th>
+                    <th>Favicon</th>
                 </tr>
             </thead>
             <tbody id="item-table-body">
@@ -55,25 +60,34 @@
         </table>
     </div>
     <script>
-        fetch('items.json')
+        fetch('parser-test-report.json')
             .then(response => response.json())
             .then(items => {
                 const tableBody = document.getElementById('item-table-body');
 
                 items.forEach(item => {
+                    const parsedData = item.parsedData;
+                    const priceData = parsedData.price;
+
                     const row = document.createElement('tr');
                     row.classList.add('item');
 
                     row.innerHTML = `
                         <td>
                             <a href="${item.url}" target="_blank">
-                                <img src="${item.imageSrc}" alt="${item.name}">
+                                <img src="${parsedData.imageSrc}" alt="${parsedData.name}">
                             </a>
                         </td>
                         <td class="item-details">
-                            <p><strong>Title:</strong> ${item.name}</p>
-                            <p><strong>Price:</strong> ${item.currency} ${item.price}</p>
-                            <p><strong>Description:</strong> ${item.description}</p>
+                            <p><strong>Title:</strong> ${parsedData.name}</p>
+                            <p><strong>Price:</strong> ${priceData.currency} ${priceData.price}</p>
+                            <p><strong>Description:</strong> ${parsedData.description}</p>
+                            <p><strong>Host:</strong> ${parsedData.host}</p>
+                            <p><strong>Page Title:</strong> ${parsedData.pageTitle}</p>
+                            <p><strong>Parsed By Schema:</strong> ${parsedData._meta.parsedBySchema}</p>
+                        </td>
+                        <td>
+                            <img src="${parsedData.faviconSrc}" class="favicon" alt="Favicon">
                         </td>
                     `;
 
